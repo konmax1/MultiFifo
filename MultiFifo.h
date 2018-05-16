@@ -23,7 +23,8 @@ class MultiFifo {
 		void setBufSize(int32_t val, int32_t internal = 1);
 		int32_t getBufSize();
 		void setBufNumber(int32_t val, int32_t internal = 1);
-		int32_t getBufNumber();
+		int32_t getBufNumber();	
+		int32_t getCurrentSize();
 		void fillFifo();
 	
 		uint32_t getBuf(uint32_t timeout = osWaitForever);	

@@ -18,7 +18,7 @@ void MultiFifo::setBufNumber(int32_t val, int32_t internal){
 }
 
 int32_t MultiFifo::getBufNumber(){	
-	return bufnumber;
+	return bufnumber; 
 }
 
 
@@ -70,7 +70,8 @@ int32_t MultiFifo::reloadParam(int32_t internal){
 }
 
 void MultiFifo::fillFifo(){
-		for(volatile int i = 0 ; i < (bufnumber - 1); i++){
+		int32_t startval = osMemoryPoolGetCount(memory);
+		for(volatile int i = startval ; i < (bufnumber - 1); i++){
 			putBuf();
 		}
 }
@@ -95,13 +96,16 @@ void MultiFifo::putBuf(){
 	uint32_t addr = (uint32_t)mas;
 	if(addr == 0) 
 		return;
-	osMessageQueuePut(adc_buf,&addr,NULL,NULL);
+	putBuf(addr);
 }
 
 void MultiFifo::freeBlock(uint32_t addr){
 	osMemoryPoolFree(memory,(void*)addr);
 }
 
+int32_t MultiFifo::getCurrentSize(){
+	return osMessageQueueGetCount(adc_buf);
+}
 
 
 
